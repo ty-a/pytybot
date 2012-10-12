@@ -21,7 +21,7 @@ import urllib2
 import cookielib
 import json
 
-class tybot():
+class tybot(object):
 
 	def __init__(self,username,password,wiki):
 		self.username = username
