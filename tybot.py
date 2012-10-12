@@ -38,8 +38,8 @@ class tybot(object):
 		"""
 		POSTs content to the wiki's API in json format
 		
-		@param array data - An array of what is being posted.
-		@return the response from the API
+		:param data (dict): An dict of what is being posted.
+		:returns: the response from the API
 		"""
 		data = urllib.urlencode(data)
 		response = self.opener.open(self.wiki, data);
@@ -53,9 +53,9 @@ class tybot(object):
 		"""
 		Logins into the wiki via API
 		
-		@param string username - The username of the user
-		@param string password - The user's password
-		@return boolean based on success
+		:param username (str): The username of the user
+		:param password (str): The user's password
+		:returns: boolean based on success
 		"""
 		data = {
 			"action":"login",
@@ -87,8 +87,8 @@ class tybot(object):
 		"""
 		Gets the usergroup a user is in
 		
-		@param string user - The user to get the string for
-		@return dict of groups
+		:param user (str): The user to get the string for
+		:returns: dict of groups
 		"""
 		data = {
 			"action":"query",
@@ -106,8 +106,8 @@ class tybot(object):
 		"""
 		Gets the tokens required to perform many actions
 		
-		@param none (uses the username provided when making tybot object)
-		@return dict of tokens
+		:param none: (uses the username provided when making tybot object)
+		:returns: dict of tokens
 		"""
 		groups = self.getGroups(self.username)
 	
@@ -167,8 +167,8 @@ class tybot(object):
 		"""
 		Gets the current content of a page on the wiki.
 		
-		@param string page - The page to get the content of.
-		@return string with the page content or '' if page does not exist
+		:param page (str): The page to get the content of.
+		:returns: string with the page content or '' if page does not exist
 		"""
 		data = {
 			"action":"query",
@@ -192,11 +192,11 @@ class tybot(object):
 		"""
 		Makes the actual edit to the page
 		
-		@param string page - The page to edit
-		@param string content - What to put on the page
-		@param string summary - The edit summary (Default: '')
-		@param boolean bot - Mark the edit as a bot or not (Default: 1)
-		@return boolean on success
+		:param page (str): The page to edit
+		:param content (str): What to put on the page
+		:param summary (str): The edit summary (Default: '')
+		:param bot (bool): Mark the edit as a bot or not (Default: 1)
+		:returns: boolean on success
 		"""
 		data = {
 			"action":"edit",
@@ -209,6 +209,7 @@ class tybot(object):
 		}
 	
 		response = self.postToWiki(data)
+	
 		try:
 			print response["error"]["info"]
 			return False
@@ -219,9 +220,9 @@ class tybot(object):
 		""" 
 		Deletes pages via the API
 		
-		@param string page - The page to delete
-		@param string summary - The deletion summary (Default:'')
-		@return boolean on success
+		:param page (str): The page to delete
+		:param summary (str): The deletion summary (Default:'')
+		:returns: boolean on success
 		"""
 		data = {
 			"action":"delete",
@@ -243,9 +244,9 @@ class tybot(object):
 		"""
 		Undeletes pages via the API
 		
-		@param string page - The page to undelete
-		@param string summary - The undeletin summary (Default: '')
-		@return boolean on success
+		:param page (str): The page to undelete
+		:param summary (str): The undeletin summary (Default: '')
+		:returns: boolean on success
 		"""
 		
 		data = {
@@ -268,10 +269,9 @@ class tybot(object):
 		"""
 		Get members of a category
 		
-		@param string category - The category to get pages from (Add Category: prefix!)
-		@param limit - How many pages to get back. (Default "max - 500 for normal users
-														5000 for users with APIhighlimits)
-		@return list of page titles
+		:param category (str): The category to get pages from (Add Category: prefix!)
+		:param limit (int): How many pages to get back. (Default "max - 500 for normal users, 5000 for users with APIhighlimits)
+		:returns: list of page titles
 		"""
 		cmcontinue = ''
 		pages = []
