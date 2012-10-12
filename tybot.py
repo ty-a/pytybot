@@ -180,7 +180,6 @@ class tybot():
 	
 		response = self.postToWiki(data)
 		response = response["query"]["pages"].values()
-		print response
 	
 		for page in response:
 			try:
@@ -210,8 +209,6 @@ class tybot():
 		}
 	
 		response = self.postToWiki(data)
-		print response
-	
 		try:
 			print response["error"]["info"]
 			return False
