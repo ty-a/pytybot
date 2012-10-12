@@ -77,7 +77,6 @@ class tybot():
 	
 		response = self.postToWiki(data)
 	
-		print response["login"] 
 		if response["login"]["result"] == "Sucess":
 			return True
 		else:
@@ -239,6 +238,31 @@ class tybot():
 	
 		try:
 			print response["error"]["info"]
+			return False
+		except:
+			return True
+			
+	def undelete(self,page,summary=''):
+		"""
+		Undeletes pages via the API
+		
+		@param string page - The page to undelete
+		@param string summary - The undeletin summary (Default: '')
+		@return boolean on success
+		"""
+		
+		data = {
+			"action":"undelete",
+			"title":page,
+			"reason":summary,
+			"format":"json",
+			"token":self.tokens["undelete"]
+		}
+		
+		response = self.postToWiki(data)
+		
+		try:
+			print response["error"]["code"]
 			return False
 		except:
 			return True

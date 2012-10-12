@@ -8,7 +8,7 @@ If running on Windows, you'll probably need to install Python. If running most l
 To use this software, you'll need to import it into your python program. (using "import tybot" with tybot.py in the same directory)
 
 == License ==
-This program is written in GNU General Public License (GPL) version 3. The full text of the license can be found in the "LICENSE" file provided in the source code.
+This program is licensed under the GNU General Public License (GPL) version 3. The full text of the license can be found in the "LICENSE" file provided in the source code.
 
 == Source Code ==
 The source code can be found online at https://github.com/ty-a/pytybot
