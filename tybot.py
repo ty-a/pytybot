@@ -200,7 +200,7 @@ class tybot(object):
 		:param content (str): What to put on the page
 		:param summary (str): The edit summary (Default: '')
 		:param bot (bool): Mark the edit as a bot or not (Default: 1)
-		:returns: boolean on success
+		:returns: boolean based on success
 		"""
 		data = {
 			"action":"edit",
@@ -226,7 +226,7 @@ class tybot(object):
 		
 		:param page (str): The page to delete
 		:param summary (str): The deletion summary (Default:'')
-		:returns: boolean on success
+		:returns: boolean based on success
 		"""
 		data = {
 			"action":"delete",
@@ -250,7 +250,7 @@ class tybot(object):
 		
 		:param page (str): The page to undelete
 		:param summary (str): The undeletin summary (Default: '')
-		:returns: boolean on success
+		:returns: boolean based on success
 		"""
 		
 		data = {
@@ -268,7 +268,57 @@ class tybot(object):
 			return False
 		except:
 			return True
-
+	
+	def block(self,target,summary='',expiry="infinite"):
+		"""
+		Blocks users via the API
+		
+		:param target (str): The user to block
+		:param summary (str): The block summary
+		:param expiry (str): Expiry timestamp or relative time. (Default: infinite)
+		:returns: boolean based on success
+		"""
+		data = {
+			"action":"block",
+			"user":target,
+			"reason":summary,
+			"expiry":expiry,
+			"token":self.tokens["block"],
+			"format":"json"
+		}
+		
+		response = self.postToWiki(data)
+		
+		try:
+			print response["error"]["code"]
+			return False
+		except:
+			return True
+	
+	def unblock(self,target,summary=''):
+		"""
+		Unblocks users via the API
+		
+		:param target (str): The user to unblock
+		:param reason (str): The unblock reason
+		:returns: boolean based on success
+		"""
+		data = {
+			"action":"unblock",
+			"user":target,
+			"reason":summary,
+			"token":self.tokens["unblock"],
+			"format":"json"
+		}
+		
+		response = self.postToWiki(data)
+		
+		try:
+			print response["error"]["code"]
+			return False
+		except:
+			return True
+		
 	def get_category_members(self,category,limit="max"):
 		"""
 		Get members of a category
