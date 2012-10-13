@@ -99,7 +99,11 @@ class tybot(object):
 		}
 	
 		response = self.postToWiki(data)
-		groups = tuple(response["query"]["users"][0]["groups"])
+		try:
+			groups = tuple(response["query"]["users"][0]["groups"])
+		except: 
+			groups = (u'*')
+			
 		return groups
 
 	def getTokens(self):
