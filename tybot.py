@@ -370,3 +370,48 @@ class tybot(object):
 					cmcontinue = response["query-continue"]["categorymembers"]["cmcontinue"]
 				except:
 					return pages
+					
+	def get_all_pages(self,redirects="nonredirects",namespace=0,):
+		"""
+		Get all pages on a wiki
+		
+		:param  redirects (str): show redirects, only redirects, or no redirects (default: nonredirects)
+			legal values: all, redirects, nonredirects
+		:param namespace (int): The numerical ID of namespace to return pages for (default: 0)
+		:returns: list of page titles
+		"""
+		
+		pages = []
+		apfrom = ''
+		
+		if((redirects != "nonredirects") and (redirects != "all") and (redirects != "redirects")):
+			return False
+		
+		while (1):
+			dataToPost = {
+				'action':'query',
+				'list':'allpages',
+				'apfrom':apfrom,
+				'apfilterredir':redirects,
+				'apnamespace':namespace,
+				'aplimit':'max',
+				'format':'json'
+			}
+			
+			response = self.postToWiki(dataToPost)
+			
+			try:
+				print response["error"]["code"]
+				return False
+			except:
+				pass
+				
+			response2 = response["query"]["allpages"]
+			
+			for page in response2:
+				pages.append(page['title'])
+				
+			try:
+				apfrom = response["query-continue"]["allpages"]["apfrom"]
+			except:
+				return pages
