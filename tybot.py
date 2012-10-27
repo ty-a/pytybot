@@ -45,7 +45,7 @@ class tybot(object):
 		response = self.opener.open(self.wiki, data);
 	
 		response = response.read()
-		response = json.loads(response)
+		response = json.loads(response, 'utf-8')
 	
 		return response
 
@@ -409,7 +409,7 @@ class tybot(object):
 			response2 = response["query"]["allpages"]
 			
 			for page in response2:
-				pages.append(page['title'])
+				pages.append(page['title']) 
 				
 			try:
 				apfrom = response["query-continue"]["allpages"]["apfrom"]
