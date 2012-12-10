@@ -119,7 +119,7 @@ class tybot(object):
 			data = {
 				"action":"query",
 				"prop":"info",
-				"intoken":"delete|edit|protect|block|unblock",
+				"intoken":"delete|edit|protect|block|unblock|watch",
 				"titles":"Main Page",
 				"format":"json"
 			}
@@ -150,7 +150,8 @@ class tybot(object):
 					"delete":intoken["deletetoken"],
 					"protect":intoken["protecttoken"],
 					"unblock":intoken["unblocktoken"],
-					"block":intoken["blocktoken"]
+					"block":intoken["blocktoken"],
+					"watch":intoken["watchtoken"]
 				}
 			
 			response = self.postToWiki(data)
@@ -162,7 +163,8 @@ class tybot(object):
 		else:
 			for intoken in response:
 				tokens = {
-					"edit":intoken["edittoken"]
+					"edit":intoken["edittoken"],
+					"watch":intoken["watchtoken"]
 				}
 
 		return tokens
@@ -415,3 +417,34 @@ class tybot(object):
 				apfrom = response["query-continue"]["allpages"]["apfrom"]
 			except:
 				return pages
+				
+	def watch(self, page, unwatch=False):
+		"""
+		Watches a page on the wiki
+		
+		:param page (str): The page to watch
+		:param unwatch (bool): Whether or not to unwatch the page. (Default: False)
+		:returns: bool based on success
+		"""
+		
+		if unwatch == False:
+			dataToPost = {
+				"action":"watch",
+				"title":page,
+				"token":self.tokens["watch"]
+			}
+		else:
+			dataToPost = {
+				"action":"watch",
+				"title":page,
+				"unwatch":'',
+				"token":self.tokens["watch"]
+			}
+		
+		response = self.PostToWiki(dataToPost)
+		
+		try:
+			print response["error"]["code"]
+			return False
+		except:
+			return True
