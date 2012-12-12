@@ -34,6 +34,22 @@ class tybot(object):
 		self.login(self.username,self.password)
 		self.tokens = self.getTokens()
 		
+	def postToWikiaApi(self,data):
+		"""
+		POSTS content to the Wikia API in the json format
+		
+		:param data (dict): A dict of what is being posted.
+		:returns: The response from the API
+		"""
+		
+		data = urllib.urlencode(data)
+		response = self.opener.open(self.wiki + "/wikia.php", data)
+		
+		response = response.read()
+		response = json.loads(response, 'utf-8')
+		
+		return response
+		
 	def postToWiki(self,data):
 		"""
 		POSTs content to the wiki's API in json format
@@ -42,7 +58,7 @@ class tybot(object):
 		:returns: the response from the API
 		"""
 		data = urllib.urlencode(data)
-		response = self.opener.open(self.wiki, data);
+		response = self.opener.open(self.wiki + "/api.php", data);
 	
 		response = response.read()
 		response = json.loads(response, 'utf-8')
