@@ -143,7 +143,7 @@ class tybot(object):
 			data = {
 				"action":"query",
 				"prop":"info",
-				"intoken":"edit",
+				"intoken":"edit|watch",
 				"titles":"Main Page",
 				"format":"json"
 			}
