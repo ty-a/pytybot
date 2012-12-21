@@ -447,6 +447,7 @@ class tybot(object):
 			dataToPost = {
 				"action":"watch",
 				"title":page,
+				'format':'json',
 				"token":self.tokens["watch"]
 			}
 		else:
@@ -454,13 +455,63 @@ class tybot(object):
 				"action":"watch",
 				"title":page,
 				"unwatch":'',
+				'format':'json',
 				"token":self.tokens["watch"]
 			}
 		
-		response = self.PostToWiki(dataToPost)
+		response = self.postToWiki(dataToPost)
 		
 		try:
 			print response["error"]["code"]
 			return False
 		except:
 			return True
+			
+	def get_users_by_group(self, group, amount = "max"):
+		dataToPost = {
+			'action':'query',
+			'list':'allusers',
+			'format':'json',
+			'augroup':group,
+			'aulimit':amount
+		}
+		
+		response = self.postToWiki(dataToPost)
+		
+		try:
+			print response["error"]["code"]
+			return False
+		except:
+			pass
+			
+		users = []
+		
+		for user in response["query"]["allusers"]:
+			users.append(user["name"])
+		
+		return users
+		
+	def get_pages_by_prefix(self, prefix, namespace = "0"):
+		dataToPost = {
+			'action':'query',
+			'list':'allpages',
+			'apprefix':prefix,
+			'apnamespace':namespace,
+			'aplimit':'max',
+			'format':'json'
+		}
+		
+		response = self.postToWiki(dataToPost)
+		
+		try:
+			print response["error"]["code"]
+			return False
+		except:
+			pass
+			
+		pages = []
+		
+		for page in response["query"]["allpages"]:
+			pages.append(page["title"])
+			
+		return pages
