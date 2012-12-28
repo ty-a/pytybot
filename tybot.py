@@ -62,7 +62,7 @@ class tybot(object):
 	
 		response = response.read()
 		response = json.loads(response, 'utf-8')
-	
+		
 		return response
 
 	def login(self,username,password):
@@ -466,8 +466,15 @@ class tybot(object):
 			return False
 		except:
 			return True
-			
+
 	def get_users_by_group(self, group, amount = "max"):
+		"""
+		Gets a list of users in a certain usergroup
+		
+		:param group (str): The group to get users in
+		:param amount: The amount to return. "max" returns the most you can get
+		:returns: list of groups or False
+		"""
 		dataToPost = {
 			'action':'query',
 			'list':'allusers',
@@ -492,6 +499,13 @@ class tybot(object):
 		return users
 		
 	def get_pages_by_prefix(self, prefix, namespace = "0"):
+		"""
+		Gets a list of pages by prefix
+		
+		:param prefix (str): The prefix to get pages by
+		:param namespace (str): The namespace numerical id to get the pages from (Default: "0")
+		:returns: list of pages or False on failure
+		"""
 		dataToPost = {
 			'action':'query',
 			'list':'allpages',
@@ -515,3 +529,30 @@ class tybot(object):
 			pages.append(page["title"])
 			
 		return pages
+		
+	def upload_by_url(self, url, filename, comment='Automated file upload', text=''):
+		"""
+		Uploads a file on URL (Requires $wgAllowCopyUploads to be true in LocalSettings.php
+		
+		:param url (str): The url to get the image to upload
+		:param filename (str): The name of the file
+		:param comment (str): The upload summary (Default: 'Automated file upload')
+		:param text (str): The text on the image page if the first upload (Default: '')
+		"""
+		dataToPost = {
+			'action':'upload',
+			'filename':filename,
+			'comment':comment, #upload comment
+			'text':text, #page text if new file
+			'url':url,
+			'format':'json',
+			'token':self.tokens['edit']
+		}
+		
+		response = self.postToWiki(dataToPost)
+		
+		try:
+			print response["error"]["code"]
+			return False
+		except: 
+			return True
