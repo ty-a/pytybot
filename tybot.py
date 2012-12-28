@@ -538,6 +538,7 @@ class tybot(object):
 		:param filename (str): The name of the file
 		:param comment (str): The upload summary (Default: 'Automated file upload')
 		:param text (str): The text on the image page if the first upload (Default: '')
+		:returns: bool on success
 		"""
 		dataToPost = {
 			'action':'upload',
