@@ -30,7 +30,7 @@ class tybot(object):
 		
 		self.cookiejar = cookielib.CookieJar()
 		self.opener = urllib2.build_opener(urllib2.HTTPCookieProcessor(self.cookiejar))
-		self.opener.add_headers = [('User-Agent','Python TyBot')]
+		self.opener.add_headers = [('User-Agent','TyBot')]
 		self.login(self.username,self.password)
 		self.tokens = self.getTokens()
 		
@@ -556,4 +556,63 @@ class tybot(object):
 			print response["error"]["code"]
 			return False
 		except: 
+			return True
+	
+	def email_user(self, target, text, subject='Automated email', ccme=False ):
+		"""
+		Sends a user an email
+		
+		:param target (str): Who the email is being sent to
+		:param subject (str): The subject of the email
+		:param text (str): The text of the email
+		:param ccme (bool): Wether or not to send email to self (Default: False)
+		:returns: bool on success
+		"""
+		# find if we can email the user
+		dataToPost = {
+			"action":"query",
+			"list":"users",
+			"ususers":target,
+			"usprop":"emailable",
+			"format":"json"
+		}
+		
+		response = self.postToWiki(dataToPost)
+		
+		for x in response["query"]["users"]:
+			try:
+				if x["emailable"] != "":
+					return False
+			except:
+				return False
+		
+		if ccme == True:
+			
+			dataToPost = {
+				'action':'emailuser',
+				'target':target,
+				'subject':subject,
+				'text':'text',
+				'ccme':'',
+				'token':self.tokens["edit"],
+				'format':'json'
+			}
+		elif ccme == False:
+			dataToPost = {
+				'action':'emailuser',
+				'target':target,
+				'subject':subject,
+				'text':'text',
+				'token':self.tokens["edit"],
+				'format':'json'
+			}
+		else:
+			raise ValueError, "Invalid option"
+		
+		response = self.postToWiki(dataToPost)
+		
+		try:
+			print response["error"]["code"]
+			return False
+		except:
 			return True
