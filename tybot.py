@@ -616,3 +616,23 @@ class tybot(object):
 			return False
 		except:
 			return True
+			
+	def query_page(self,type, limit="max", qpoffset=''):
+		dataToPost = {
+			"action":"query",
+			"list":"querypage",
+			"qppage":type,
+			"qplimit":limit,
+			"qpoffset":qpoffset,
+			"format":"json"
+		}
+		
+		response = self.postToWiki(dataToPost)
+		
+		try:
+			print response["error"]["code"]
+			return False
+		except:
+			return response
+			
+		
