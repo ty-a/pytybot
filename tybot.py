@@ -635,4 +635,32 @@ class tybot(object):
 		except:
 			return response
 			
+	def get_backlinks(self,title, namespace=0,redirects="all",limit="max",blcontinue=''):
+		if blcontinue == "":
+			dataToPost = {
+				"action":"query",
+				"list":"backlinks",
+				"bltitle":title,
+				"blnamespace":namespace,
+				"blfilterredir":redirects,
+				"bllimit":limit,
+				"format":"json"
+			}
+		else:
+				dataToPost = {
+				"action":"query",
+				"list":"backlinks",
+				"bltitle":title,
+				"blnamespace":namespace,
+				"blfilterredir":redirects,
+				"bllimit":limit,
+				"blcontinue":blcontinue,
+				"format":"json"
+			}
 		
+		response = self.postToWiki(dataToPost)
+		try:
+			print response["error"]["code"]
+			return False
+		except:
+			return response
