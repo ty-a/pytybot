@@ -34,6 +34,15 @@ class tybot(object):
 		self.login(self.username,self.password)
 		self.tokens = self.getTokens()
 		
+	def change_wiki(self, wiki):
+		"""
+		Changes the internal wiki variable to let us edit multiple wikis without
+		making multiple objects. Does not relogin. 
+		:param wiki(str): The new wiki URL
+		:returns none:
+		"""
+		self.wiki = wiki
+		
 	def postToWikiaApi(self,data):
 		"""
 		POSTS content to the Wikia API in the json format
